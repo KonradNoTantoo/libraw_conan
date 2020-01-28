@@ -8,12 +8,10 @@ class LibrawConan(ConanFile):
     folder_name = "LibRaw-{}".format(version)
     license = "LGPL2"
     author = "konrad"
-    url = ""
+    url = "https://github.com/KonradNoTantoo/libraw_conan"
     description = "LibRaw is a library for reading RAW files obtained from digital photo cameras (CRW/CR2, NEF, RAF, DNG, and others)."
     topics = ("RAW", "image", "camera", "conan")
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = {"shared": False}
     generators = "cmake"
     exports = "CMakeLists.txt"
 
