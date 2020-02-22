@@ -47,5 +47,8 @@ class LibrawConan(ConanFile):
         self.copy("lib/*.lib", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["libraw"]
+        if self.settings.compiler == "Visual Studio":
+            self.cpp_info.libs = ["libraw"]
+        else:
+            self.cpp_info.libs = ["libraw.so"]
 
