@@ -50,5 +50,5 @@ class LibrawConan(ConanFile):
         if self.settings.compiler == "Visual Studio":
             self.cpp_info.libs = ["libraw"]
         else:
-            self.cpp_info.libs = ["libraw.so"]
+            self.cpp_info.libs = ["raw"]
 
