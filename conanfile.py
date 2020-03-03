@@ -15,10 +15,12 @@ class LibrawConan(ConanFile):
     generators = "cmake"
     exports = "CMakeLists.txt"
 
+
     def copy_file_to_source(self, name):
         file_content = tools.load(name)
         path_to_source = os.path.join(self.source_folder, self.folder_name, name)
         tools.save(path_to_source, file_content)
+
 
     def source(self):
         tarball_path = "https://www.libraw.org/data/LibRaw-{}.tar.gz".format(self.version)
@@ -26,6 +28,7 @@ class LibrawConan(ConanFile):
 
         if self.settings.compiler == "Visual Studio":
             self.copy_file_to_source("CMakeLists.txt")
+
 
     def build(self):
         if self.settings.compiler == "Visual Studio":
@@ -38,13 +41,20 @@ class LibrawConan(ConanFile):
                 env_build.configure() 
                 env_build.make()
 
+
     def package(self):
-        self.copy("libraw/*.h", dst="include", src=self.folder_name, keep_path=False)
-        self.copy("*/libraw.dll", dst="bin", keep_path=False)
-        self.copy("*/libraw.so", dst="lib", keep_path=False)
-        self.copy("lib/*.pdb", dst="lib", keep_path=False)
-        self.copy("lib/*.exp", dst="lib", keep_path=False)
-        self.copy("lib/*.lib", dst="lib", keep_path=False)
+        if self.settings.compiler == "Visual Studio":
+            self.copy("libraw/*.h", dst="include", src=self.folder_name, keep_path=True)
+            self.copy("*/libraw.dll", dst="bin", keep_path=False)
+            self.copy("lib/*.pdb", dst="lib", keep_path=False)
+            self.copy("lib/*.exp", dst="lib", keep_path=False)
+            self.copy("lib/*.lib", dst="lib", keep_path=False)
+        else:
+            with tools.chdir(self.folder_name):
+                env_build = AutoToolsBuildEnvironment(self)
+                env_build.configure()
+                env_build.install()
+
 
     def package_info(self):
         if self.settings.compiler == "Visual Studio":

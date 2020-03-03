@@ -1,4 +1,4 @@
-#include "libraw.h"
+#include "libraw/libraw.h"
 
 int main(int ac, char *av[])
 {
